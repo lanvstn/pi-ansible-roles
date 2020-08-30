@@ -1,0 +1,1 @@
+librespot_bin_path: "{{ playbook_dir }}/bin/librespot"

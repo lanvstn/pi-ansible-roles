@@ -1,0 +1,24 @@
+---
+- name: restart bluetooth
+  systemd:
+    name: bluetooth
+    state: restarted
+
+- name: restart pulseaudio
+  systemd:
+    name: pulseaudio
+    state: restarted
+
+- name: restart udev
+  systemd:
+    name: udev
+    state: restarted
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+
+# Sometimes reload is not enough
+- name: reexec systemd
+  systemd:
+    daemon_reexec: yes

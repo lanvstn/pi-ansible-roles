@@ -1,0 +1,22 @@
+---
+- name: install systemd unit
+  template:
+    src: librespot.service
+    dest: /etc/systemd/system/librespot.service
+  notify:
+    - reload systemd
+    - restart librespot
+
+- name: copy librespot binary
+  copy:
+    src: "{{ librespot_bin_path }}"
+    dest: /usr/local/bin/librespot
+    mode: 0755
+  notify:
+    - restart librespot
+
+- name: enable and run librespot
+  systemd:
+    name: librespot
+    enabled: true
+    state: started

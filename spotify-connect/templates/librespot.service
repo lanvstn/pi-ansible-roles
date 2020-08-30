@@ -1,0 +1,15 @@
+[Unit]
+Description=Spotify Connect
+StartLimitIntervalSec=5
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/librespot -n "{{ ansible_hostname }}" -b 160 --disable-audio-cache
+Restart=on-failure
+
+User=audio
+Group=audio
+RuntimeDirectory=audio
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/tmp

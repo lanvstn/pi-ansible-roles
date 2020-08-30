@@ -1,0 +1,19 @@
+[Unit]
+Description=Pulseaudio service
+StartLimitIntervalSec=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pulseaudio
+Restart=on-failure
+
+RuntimeDirectory=audio
+
+User=audio
+Group=audio
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=bluetooth.target

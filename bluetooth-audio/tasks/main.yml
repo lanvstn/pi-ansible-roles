@@ -1,0 +1,87 @@
+---
+# Helped me a lot: https://raspberrypi.stackexchange.com/a/48055
+
+- name: packages
+  apt:
+    name:
+      - bluez
+      - bluez-tools
+      - pulseaudio
+      - pulseaudio-module-bluetooth
+      - python-gobject
+      - python-gobject-2
+      - udev
+    state: present
+
+- name: audio user
+  user:
+    name: audio
+    system: yes
+    create_home: no
+    home: /run/audio
+    group: audio
+    groups:
+      - pulse
+      - bluetooth
+    shell: /usr/sbin/nologin
+    state: present
+
+- name: install systemd units
+  copy:
+    src: "systemd/{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+  loop:
+    - bluetooth.service
+    - pulseaudio.service
+  notify: reload systemd
+
+- name: configure bluetooth
+  copy:
+    src: "bluetooth/{{ item }}"
+    dest: "/etc/bluetooth/{{ item }}"
+  loop:
+    - main.conf
+    - audio.conf
+  notify:
+    - restart bluetooth
+    - restart pulseaudio
+
+- name: configure pulseaudio
+  copy:
+    src: "pulse/{{ item }}"
+    dest: "/etc/pulse/{{ item }}"
+  loop:
+    - daemon.conf
+    - default.pa
+    - system.pa
+  notify: restart pulseaudio
+
+- name: ensure udev directory
+  file:
+    path: /usr/lib/udev
+    state: directory
+    mode: 0755
+
+# udev script from https://gist.github.com/ragusa87/6687903
+- name: install bluetooth script for udev
+  copy:
+    src: udev/bluetooth
+    dest: /usr/lib/udev
+    mode: 0755
+  notify: restart udev
+
+- name: install udev rules
+  copy:
+    src: udev/90-bluetooth-input.rules
+    dest: /etc/udev/rules.d/90-bluetooth-input.rules
+  notify: restart udev
+
+- name: enable and run systemd services
+  systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - bluetooth
+    - pulseaudio
+    - udev

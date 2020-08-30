@@ -1,0 +1,9 @@
+---
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: restart librespot
+  systemd:
+    name: librespot
+    state: restarted
