@@ -4,7 +4,7 @@ StartLimitIntervalSec=5
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/librespot -n "{{ ansible_hostname }}" -b 160 --disable-audio-cache
+ExecStart=/usr/local/bin/librespot -n "{{ ansible_hostname }}" -b 160 --disable-audio-cache --enable-volume-normalisation
 Restart=on-failure
 
 User=audio
