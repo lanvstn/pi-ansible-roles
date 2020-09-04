@@ -1,5 +1,8 @@
+---
 - hosts: pi
   become: yes
   roles:
     - bluetooth-audio
-    - spotify-connect
+
+    # The roles below require extra steps and are commented out by default.
+    # - spotify-connect

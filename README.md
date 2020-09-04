@@ -25,7 +25,7 @@ Create a `hosts.ini` file with the local address of your Pi, like so:
 
 In `play.yml`, make sure only the roles you want to run are listed.
 
-**Warning:** The following roles require extra steps:
+**Warning:** The following roles require extra steps so they are commented out:
 
 * spotify-connect
 
