@@ -4,6 +4,11 @@
     name: bluetooth
     state: restarted
 
+- name: restart a2dp-agent
+  systemd:
+    name: a2dp-agent
+    state: restarted
+
 - name: restart pulseaudio
   systemd:
     name: pulseaudio
@@ -17,8 +22,3 @@
 - name: reload systemd
   systemd:
     daemon_reload: yes
-
-# Sometimes reload is not enough
-- name: reexec systemd
-  systemd:
-    daemon_reexec: yes

@@ -37,20 +37,10 @@ $ ansible-playbook play.yml
 
 ## bluetooth-audio
 
-Sets up your Pi as a Bluetooth speaker.
+Sets up your Pi as a Bluetooth speaker. It will be discoverable with the hostname of the device.
 
-It will be discoverable with the hostname of the device. One problem with this setup remains for now, and that is that you will have to manually trust every new device that connects for the first time.
-
-To do this, inside a shell in your pi:
-
-1. run `bluetoothctl`
-1. try to connect using your phone/laptop
-1. monitor the output for the address of the device
-1. do one of the following:
-  - trust the device by entering `trust FF:FF:FF:FF:FF:FF` (with your device address)
-  - OR: answer `yes` to the `Authorize service` prompt, but only to the one starting with `0000110d-` (this is A2DP). Sometimes this works better than the trust step depending on the device. But you have to do this on every connection...
-
-I am looking to improve this soon, by adding a custom agent that will auto-answer these prompts.
+Uses the PulseAudio bluetooth module, glued together with udev and a script.
+The small A2DP agent service takes care of the pairing of bluetooth devices.
 
 ## spotify-connect
 

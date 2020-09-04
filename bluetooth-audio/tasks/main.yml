@@ -8,8 +8,8 @@
       - bluez-tools
       - pulseaudio
       - pulseaudio-module-bluetooth
-      - python-gobject
-      - python-gobject-2
+      - python3-gi
+      - python3-dbus
       - udev
     state: present
 
@@ -32,6 +32,7 @@
     dest: "/etc/systemd/system/{{ item }}"
   loop:
     - bluetooth.service
+    - a2dp-agent.service
     - pulseaudio.service
   notify: reload systemd
 
@@ -45,6 +46,14 @@
   notify:
     - restart bluetooth
     - restart pulseaudio
+
+- name: install a2dp agent
+  copy:
+    src: a2dp-agent.py
+    dest: /usr/local/bin/a2dp-agent.py
+    mode: 0755
+  notify:
+    - restart a2dp-agent
 
 - name: configure pulseaudio
   copy:
@@ -83,5 +92,6 @@
     state: started
   loop:
     - bluetooth
+    - a2dp-agent
     - pulseaudio
     - udev

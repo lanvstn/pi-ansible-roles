@@ -2,3 +2,5 @@ bin/
 hosts.*
 ssh.cfg
 ansible.cfg
+
+.vscode/
